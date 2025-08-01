@@ -1,5 +1,6 @@
 import type { Route } from "./+types/index";
-// import Hero from "~/components/Hero";
+import FeaturedProjects from "~/components/FeaturedProjects";
+import type { Project } from "~/types";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -8,19 +9,23 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-export default function Home() {
+export async function loader({ request }: Route.LoaderArgs): Promise<{projects: Project[]}> {
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/projects`);
+  const data = await res.json();
 
-    // const now = new Date().toISOString();
-    // console.log("Are you going to show?");
-
-    // if(typeof window === 'undefined') {
-    //     console.log("Server Render At:", now);   
-    // } else {
-    //     console.log("Client Hydration At:", now);
-    // }
-
-    return <>
-      Homepage
-      {/* <Hero name='Brat' /> */}
-    </>;
+  return {projects: data};
 }
+
+const HomePage = ({loaderData}: Route.ComponentProps) => {
+
+
+  const {projects} = loaderData;
+
+    return (
+    <>
+      <FeaturedProjects projects={projects} count={2} />
+    </>
+    );
+}
+
+export default HomePage;

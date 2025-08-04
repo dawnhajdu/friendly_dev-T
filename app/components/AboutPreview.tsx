@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 
+
 const AboutPreview = () => {
     return ( 
         <section className="mt-12 p-10 flex flex-col md:flex-row items-center gap-8 bg-gray-800">
